@@ -2,10 +2,9 @@ const { dataStore } = require("../data/data.js");
 
 function getCustomerBaskets(email, data) {
     const customerBaskets = [];
-    let y = 0;
-    for(let x in data) {
-        if(email === data[x].email) {
-            customerBaskets.push(data[x].items);
+    for(let index in data) {
+        if(email === data[index].email) {
+            customerBaskets.push(data[index].items);
         };
     }
     return customerBaskets;
@@ -13,23 +12,23 @@ function getCustomerBaskets(email, data) {
 
 function getAllCustomers(data) {
     const customerEmails = [];
-    for(let x in data) {
-        if(customerEmails.includes(data[x].email)) {
+    for(let index in data) {
+        if(customerEmails.includes(data[index].email)) {
             continue;
         } 
-        customerEmails.push(data[x].email);
+        customerEmails.push(data[index].email);
     }
     return customerEmails;
 }
 
 function requiredStock(data) {
     const stockRequired = [];
-    for(let x in data) {
-        if(data[x].status === "PAID") {
-            for(let y in data[x].items){
+    for(let basketIndex in data) {
+        if(data[basketIndex].status === "PAID") {
+            for(let itemsIndex in data[basketIndex].items){
                 let stock = {};
-                stock.name = data[x].items[y].name;
-                stock.quantity = data[x].items[y].quantity;
+                stock.name = data[basketIndex].items[itemsIndex].name;
+                stock.quantity = data[basketIndex].items[itemsIndex].quantity;
                 stockRequired.push(stock);
             };
         };
@@ -40,10 +39,10 @@ function requiredStock(data) {
 function totalSpent(email, data) {
     const finalInfo = {};
     let totalExpense = 0;
-    for(let x in data){
-        if(data[x].email === email && data[x].status === "PAID" || data[x].email === email && data[x].status === "DELIVERED") {
-            for(let y in data[x].items){
-                totalExpense += data[x].items[y].price * data[x].items[y].quantity;
+    for(let basketIndex in data){
+        if(data[basketIndex].email === email && data[basketIndex].status === "PAID" || data[basketIndex].email === email && data[basketIndex].status === "DELIVERED") {
+            for(let itemsIndex in data[basketIndex].items){
+                totalExpense += data[basketIndex].items[itemsIndex].price * data[basketIndex].items[itemsIndex].quantity;
             };
         };
     }
@@ -54,8 +53,8 @@ function totalSpent(email, data) {
 
 function topCustomers(data) {
     const customerExpentiture = [];
-    for(let x in data) {
-        customerExpentiture.push(totalSpent(data[x].email, data));
+    for(let index in data) {
+        customerExpentiture.push(totalSpent(data[index].email, data));
     }
     customerExpentiture.sort((a, b) => parseFloat(b.total) - parseFloat(a.total));
     return customerExpentiture;
@@ -63,11 +62,10 @@ function topCustomers(data) {
 
 function getCustomersWithOpenBaskets(data) {
     const openBasketEmails = [];
-    for(let x in data) {
-        if(data[x].status === "OPEN") {
-            openBasketEmails.push(data[x].email)
+    for(let index in data) {
+        if(data[index].status === "OPEN") {
+            openBasketEmails.push(data[index].email)
         };
     }
     return openBasketEmails;
 }
-
