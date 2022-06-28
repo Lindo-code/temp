@@ -53,7 +53,12 @@ function totalSpent(email, data) {
 
 function topCustomers(data) {
     const customerExpentiture = [];
+    const emails = [];
     for(let index in data) {
+        if(emails.includes(data[index].email)) {
+            continue;
+        }
+        emails.push(data[index].email);
         customerExpentiture.push(totalSpent(data[index].email, data));
     }
     customerExpentiture.sort((a, b) => parseFloat(b.total) - parseFloat(a.total));
