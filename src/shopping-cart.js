@@ -4,7 +4,15 @@ function getCustomerBaskets(email, data) {
     const customerBaskets = [];
     for(let index in data) {
         if(email === data[index].email) {
-            customerBaskets.push(data[index].items);
+            let basket = {};
+            basket.email = data[index].email;
+            basket.status = data[index].status;
+            basket.items = [];
+            data[index].items.forEach(item => {
+                basket.items.push(item);
+            });
+            customerBaskets.push(basket);
+            basket = {};
         };
     }
     return customerBaskets;
@@ -23,13 +31,23 @@ function getAllCustomers(data) {
 
 function requiredStock(data) {
     const stockRequired = [];
+    const emailCheck = [];
     for(let basketIndex in data) {
         if(data[basketIndex].status === "PAID") {
             for(let itemsIndex in data[basketIndex].items){
                 let stock = {};
+                if(emailCheck.includes(data[basketIndex].items[itemsIndex].name)) {
+                    for(let i = 0; i < stockRequired.length; i++){
+                        if(stockRequired[i].name === data[basketIndex].items[itemsIndex].name){
+                            stockRequired[i].quantity += data[basketIndex].items[itemsIndex].quantity;
+                        };
+                    }
+                    continue;
+                }
                 stock.name = data[basketIndex].items[itemsIndex].name;
                 stock.quantity = data[basketIndex].items[itemsIndex].quantity;
                 stockRequired.push(stock);
+                emailCheck.push(data[basketIndex].items[itemsIndex].name); 
             };
         };
     }
@@ -74,3 +92,4 @@ function getCustomersWithOpenBaskets(data) {
     }
     return openBasketEmails;
 }
+
