@@ -71,11 +71,15 @@ function topCustomers(data) {
     const customerExpentiture = [];
     const emails = [];
     for(let index in data) {
+        let tempData = {};
         if(emails.includes(data[index].email)) {
             continue;
         }
         emails.push(data[index].email);
-        customerExpentiture.push(totalSpent(data[index].email, data));
+        tempData.email = data[index].email;
+        tempData.total = totalSpent(data[index].email, data);
+        customerExpentiture.push(tempData);
+        tempData = {};
     }
     customerExpentiture.sort((a, b) => parseFloat(b.total) - parseFloat(a.total));
     return customerExpentiture;
@@ -90,4 +94,3 @@ function getCustomersWithOpenBaskets(data) {
     }
     return openBasketEmails;
 }
-
