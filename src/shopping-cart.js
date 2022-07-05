@@ -41,6 +41,7 @@ function requiredStock(data) {
                         if(stockRequired[i].name === data[basketIndex].items[itemsIndex].name){
                             stockRequired[i].quantity += data[basketIndex].items[itemsIndex].quantity;
                         };
+
                     }
                     continue;
                 }
@@ -55,7 +56,6 @@ function requiredStock(data) {
 }
 
 function totalSpent(email, data) {
-    const finalInfo = {};
     let totalExpense = 0;
     for(let basketIndex in data){
         if(data[basketIndex].email === email && data[basketIndex].status === "PAID" || data[basketIndex].email === email && data[basketIndex].status === "DELIVERED") {
@@ -63,10 +63,8 @@ function totalSpent(email, data) {
                 totalExpense += data[basketIndex].items[itemsIndex].price * data[basketIndex].items[itemsIndex].quantity;
             };
         };
-    }
-    finalInfo.email = email;
-    finalInfo.total = totalExpense 
-    return finalInfo;
+    } 
+    return totalExpense;
 }
 
 function topCustomers(data) {
