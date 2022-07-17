@@ -1,14 +1,19 @@
-const { dataStore } = require("../data/data.js");
+const dataStore = require("./data/data.js");
+const customer = {
+    shoppingBaskets: dataStore.dataStore, 
+    email: "tshepo@umuzi.org"
+};
+const {shoppingBaskets, email} = customer;
 
-function getCustomerBaskets(email, data) {
+function getCustomerBaskets(data) {
     const customerBaskets = [];
-    for(let index in data) {
-        if(email === data[index].email) {
+    for(let index in data.shoppingBaskets) {
+        if(data.email === data.shoppingBaskets[index].email) {
             let basket = {};
-            basket.email = data[index].email;
-            basket.status = data[index].status;
+            basket.email = data.shoppingBaskets[index].email;
+            basket.status = data.shoppingBaskets[index].status;
             basket.items = [];
-            data[index].items.forEach(item => {
+            data.shoppingBaskets[index].items.forEach(item => {
                 basket.items.push(item);
             });
             customerBaskets.push(basket);
@@ -20,11 +25,11 @@ function getCustomerBaskets(email, data) {
 
 function getAllCustomers(data) {
     const customerEmails = [];
-    for(let index in data) {
-        if(customerEmails.includes(data[index].email)) {
+    for(let index in data.shoppingBaskets) {
+        if(customerEmails.includes(data.shoppingBaskets[index].email)) {
             continue;
         } 
-        customerEmails.push(data[index].email);
+        customerEmails.push(data.shoppingBaskets[index].email);
     }
     return customerEmails;
 }
@@ -32,23 +37,23 @@ function getAllCustomers(data) {
 function requiredStock(data) {
     const stockRequired = [];
     const emailCheck = [];
-    for(let basketIndex in data) {
-        if(data[basketIndex].status === "PAID") {
-            for(let itemsIndex in data[basketIndex].items){
+    for(let basketIndex in data.shoppingBaskets) {
+        if(data.shoppingBaskets[basketIndex].status === "PAID") {
+            for(let itemsIndex in data.shoppingBaskets[basketIndex].items){
                 let stock = {};
-                if(emailCheck.includes(data[basketIndex].items[itemsIndex].name)) {
+                if(emailCheck.includes(data.shoppingBaskets[basketIndex].items[itemsIndex].name)) {
                     for(let i = 0; i < stockRequired.length; i++){
-                        if(stockRequired[i].name === data[basketIndex].items[itemsIndex].name){
-                            stockRequired[i].quantity += data[basketIndex].items[itemsIndex].quantity;
+                        if(stockRequired[i].name === data.shoppingBaskets[basketIndex].items[itemsIndex].name){
+                            stockRequired[i].quantity += data.shoppingBaskets[basketIndex].items[itemsIndex].quantity;
                         };
 
                     }
                     continue;
                 }
-                stock.name = data[basketIndex].items[itemsIndex].name;
-                stock.quantity = data[basketIndex].items[itemsIndex].quantity;
+                stock.name = data.shoppingBaskets[basketIndex].items[itemsIndex].name;
+                stock.quantity = data.shoppingBaskets[basketIndex].items[itemsIndex].quantity;
                 stockRequired.push(stock);
-                emailCheck.push(data[basketIndex].items[itemsIndex].name); 
+                emailCheck.push(data.shoppingBaskets[basketIndex].items[itemsIndex].name); 
             };
         };
     }
@@ -57,10 +62,10 @@ function requiredStock(data) {
 
 function totalSpent(email, data) {
     let totalExpense = 0;
-    for(let basketIndex in data){
-        if(data[basketIndex].email === email && data[basketIndex].status === "PAID" || data[basketIndex].email === email && data[basketIndex].status === "DELIVERED") {
-            for(let itemsIndex in data[basketIndex].items){
-                totalExpense += data[basketIndex].items[itemsIndex].price * data[basketIndex].items[itemsIndex].quantity;
+    for(let basketIndex in data.shoppingBaskets){
+        if(data.shoppingBaskets[basketIndex].email === data.email && data.shoppingBaskets[basketIndex].status === "PAID" || data.shoppingBaskets[basketIndex].email === data.email && data.shoppingBaskets[basketIndex].status === "DELIVERED") {
+            for(let itemsIndex in data.shoppingBaskets[basketIndex].items){
+                totalExpense += data.shoppingBaskets[basketIndex].items[itemsIndex].price * data.shoppingBaskets[basketIndex].items[itemsIndex].quantity;
             };
         };
     } 
@@ -70,14 +75,14 @@ function totalSpent(email, data) {
 function topCustomers(data) {
     const customerExpentiture = [];
     const emails = [];
-    for(let index in data) {
+    for(let index in data.shoppingBaskets) {
         let tempData = {};
-        if(emails.includes(data[index].email)) {
+        if(emails.includes(data.shoppingBaskets[index].email)) {
             continue;
         }
-        emails.push(data[index].email);
-        tempData.email = data[index].email;
-        tempData.total = totalSpent(data[index].email, data);
+        emails.push(data.shoppingBaskets[index].email);
+        tempData.email = data.shoppingBaskets[index].email;
+        tempData.total = totalSpent(data.shoppingBaskets[index].email, data.shoppingBaskets);
         customerExpentiture.push(tempData);
         tempData = {};
     }
@@ -87,9 +92,9 @@ function topCustomers(data) {
 
 function getCustomersWithOpenBaskets(data) {
     const openBasketEmails = [];
-    for(let index in data) {
-        if(data[index].status === "OPEN") {
-            openBasketEmails.push(data[index].email)
+    for(let index in data.shoppingBaskets) {
+        if(data.shoppingBaskets[index].status === "OPEN") {
+            openBasketEmails.push(data.shoppingBaskets[index].email)
         };
     }
     return openBasketEmails;
