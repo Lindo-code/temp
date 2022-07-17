@@ -1,6 +1,6 @@
-const dataStore = require("./data/data.js");
+const basketsData = require("./data/data.js");
 const customer = {
-    shoppingBaskets: dataStore.dataStore, 
+    shoppingBaskets: basketsData.dataStore, 
     email: "tshepo@umuzi.org"
 };
 const {shoppingBaskets, email} = customer;
