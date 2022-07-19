@@ -1,4 +1,4 @@
-const dataStore = [
+[
     {
         "email": "tshepo@umuzi.org",
         "status": "OPEN",
@@ -209,5 +209,3 @@ const dataStore = [
         ]
     }
 ]   
-
-module.exports = {dataStore};

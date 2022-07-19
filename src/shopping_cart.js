@@ -1,9 +1,20 @@
-const basketsData = require("./data/data.js");
+const fs = require("fs");
 const customer = {
-    shoppingBaskets: {data: basketsData.dataStore}, 
+    shoppingBaskets: {data: fetchData()}, 
     email: {address:"tshepo@umuzi.org"}
 };
 const {shoppingBaskets, email} = customer;
+
+function fetchData() {
+    try {
+      const jsonData = fs.readFileSync("./data.json");
+      const data = JSON.parse(jsonData);
+      return data;
+    } catch (err) {
+      console.log(err);
+      return;
+    };
+}
 
 function getCustomerBaskets({shoppingBaskets, email}) {
     const customerBaskets = [];
