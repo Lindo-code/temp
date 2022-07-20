@@ -1,13 +1,13 @@
 const fs = require("fs");
 const customer = {
     shoppingBaskets: {data: fetchData()}, 
-    email: {address:"tshepo@umuzi.org"}
+    email: "tshepo@umuzi.org"
 };
 const {shoppingBaskets, email} = customer;
 
 function fetchData() {
     try {
-      const jsonData = fs.readFileSync("./data.json");
+      const jsonData = fs.readFileSync("./src/data.json");
       const data = JSON.parse(jsonData);
       return data;
     } catch (err) {
@@ -19,7 +19,7 @@ function fetchData() {
 function getCustomerBaskets({shoppingBaskets, email}) {
     const customerBaskets = [];
     for(let index in shoppingBaskets.data) {
-        if(email.address === shoppingBaskets.data[index].email) {
+        if(email === shoppingBaskets.data[index].email) {
             let basket = {};
             basket.email = shoppingBaskets.data[index].email;
             basket.status = shoppingBaskets.data[index].status;
@@ -74,7 +74,7 @@ function requiredStock({shoppingBaskets}) {
 function totalSpent({email, shoppingBaskets}) {
     let totalExpense = 0;
     for(let basketIndex in shoppingBaskets.data){
-        if(shoppingBaskets.data[basketIndex].email === email.address && shoppingBaskets.data[basketIndex].status === "PAID" || shoppingBaskets.data[basketIndex].email === email.address && shoppingBaskets.data[basketIndex].status === "DELIVERED") {
+        if(shoppingBaskets.data[basketIndex].email === email && shoppingBaskets.data[basketIndex].status === "PAID" || shoppingBaskets.data[basketIndex].email === email && shoppingBaskets.data[basketIndex].status === "DELIVERED") {
             for(let itemsIndex in shoppingBaskets.data[basketIndex].items){
                 totalExpense += shoppingBaskets.data[basketIndex].items[itemsIndex].price * shoppingBaskets.data[basketIndex].items[itemsIndex].quantity;
             };
@@ -93,7 +93,7 @@ function topCustomers({shoppingBaskets}) {
         }
         emails.push(shoppingBaskets.data[index].email);
         tempData.email = shoppingBaskets.data[index].email;
-        tempData.total = totalSpent({email: {address: shoppingBaskets.data[index].email}, shoppingBaskets: {data: shoppingBaskets.data}});
+        tempData.total = totalSpent({email: shoppingBaskets.data[index].email, shoppingBaskets: {data: shoppingBaskets.data}});
         customerExpentiture.push(tempData);
         tempData = {};
     }
