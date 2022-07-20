@@ -6,7 +6,7 @@ const {shoppingBaskets} = customer;
 
 function fetchData() {
     try {
-      const jsonData = fs.readFileSync("data.json");
+      const jsonData = fs.readFileSync("./src/data.json");
       const data = JSON.parse(jsonData);
       return data;
     } catch (err) {
@@ -109,3 +109,5 @@ function getCustomersWithOpenBaskets({shoppingBaskets}) {
     }
     return openBasketEmails;
 }
+
+console.log(getCustomerBaskets({shoppingBaskets, email: "tshepo@umuzi.org"}))
