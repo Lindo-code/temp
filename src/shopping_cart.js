@@ -84,7 +84,7 @@ function totalSpent({email, shoppingBaskets}) {
 }
 
 function topCustomers({shoppingBaskets}) {
-    const customerExpentiture = [];
+    const customerExpenditure = [];
     const emails = [];
     for(let index in shoppingBaskets) {
         let tempData = {};
@@ -94,11 +94,11 @@ function topCustomers({shoppingBaskets}) {
         emails.push(shoppingBaskets[index].email);
         tempData.email = shoppingBaskets[index].email;
         tempData.total = totalSpent({email: shoppingBaskets[index].email, shoppingBaskets});
-        customerExpentiture.push(tempData);
+        customerExpenditure.push(tempData);
         tempData = {};
     }
-    customerExpentiture.sort((a, b) => parseFloat(b.total) - parseFloat(a.total));
-    return customerExpentiture;
+    customerExpenditure.sort((a, b) => parseFloat(b.total) - parseFloat(a.total));
+    return customerExpenditure;
 }
 
 function getCustomersWithOpenBaskets({shoppingBaskets}) {
