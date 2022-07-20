@@ -1,9 +1,8 @@
 const fs = require("fs");
 const customer = {
-    shoppingBaskets: fetchData(), 
-    email: "tshepo@umuzi.org"
-};
-const {shoppingBaskets, email} = customer;
+    shoppingBaskets: fetchData()
+}
+const {shoppingBaskets} = customer;
 
 function fetchData() {
     try {
